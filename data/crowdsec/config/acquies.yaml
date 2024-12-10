@@ -1,0 +1,24 @@
+filenames:
+ - /var/log/auth.log
+ - /var/log/syslog
+labels:
+  type: syslog
+---
+filenames:
+  - /var/log/traefik/access.log
+labels:
+  type: traefik
+---
+source: docker
+container_name:
+  - mailcowdockerized-nginx-mailcow-1
+labels:
+  type: nginx
+---
+source: docker
+container_name:
+  - mailcowdockerized-dovecot-mailcow-1
+  - mailcowdockerized-postfix-mailcow-1
+labels:
+  type: syslog
+---
