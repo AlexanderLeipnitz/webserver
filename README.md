@@ -10,4 +10,6 @@ Setting up a Webserver using Hetzner as a hosting provider.
 
 3. Set environment variables in `.env` file
 
-4. Start all docker container
+4. Generate .htpasswd file: `htpasswd -c $ABSOLUTE_PATH/data/traefik/.htpasswd $TRAEFIK_USERNAME`
+
+5. Start all docker container
