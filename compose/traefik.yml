@@ -19,7 +19,7 @@ services:
       traefik.enable: "true"
       traefik.http.routers.traefik-dashboad.entrypoints: websecure
       traefik.http.routers.traefik-dashboad.middlewares: default@file, traefik-dashboard-auth@file
-      traefik.http.routers.traefik-dashboad.rule: ${SERVICES_TRAEFIK_LABELS_TRAEFIK_HOST:-HOST(`traefik.${HOSTNAME}`)}
+      traefik.http.routers.traefik-dashboad.rule: Host(`traefik.${HOSTNAME}`)
       traefik.http.routers.traefik-dashboad.service: api@internal
       traefik.http.routers.traefik-dashboad.tls: "true"
       traefik.http.routers.traefik-dashboad.tls.certresolver: tls_resolver
