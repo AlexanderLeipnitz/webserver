@@ -1,24 +1,27 @@
-version: '3'
 services:
-  nginx:
-    image: nginx:latest
-    container_name: nginx_website
-    volumes:
-      - ~/personal_webpage:/usr/share/nginx/html:ro
+  frontend:
+    container_name: personal-webpage
+    build: .
+    ports:
+      - "3000:3000"
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.nginx.entrypoints=http"
-      - "traefik.http.routers.nginx.rule=Host(`www.${HOSTNAME}`, `${HOSTNAME}`)"
-      - "traefik.http.routers.nginx-secure.entrypoints=https"
-      - "traefik.http.routers.nginx-secure.rule=Host(`www.${HOSTNAME}`, `${HOSTNAME}`)"
-      - "traefik.http.routers.nginx-secure.tls=true"
-      - "traefik.http.routers.nginx-secure.tls.certresolver=http"
-      - "traefik.http.services.pnginx.loadbalancer.server.port=80"
-      - "traefik.docker.network=proxy"
+      traefik.docker.network: proxy
+      traefik.enable: "true"
+      traefik.http.routers.frontend-secure.entrypoints: websecure
+      traefik.http.routers.frontend-secure.middlewares: default@file
+      traefik.http.routers.frontend-secure.rule: Host(`${HOSTNAME}`) || Host(`www.${HOSTNAME}`)
+      traefik.http.routers.frontend-secure.service: frontend
+      traefik.http.routers.frontend-secure.tls: "true"
+      traefik.http.routers.frontend-secure.tls.certresolver: tls_resolver
+      traefik.http.routers.frontend.entrypoints: web
+      traefik.http.routers.frontend.rule: Host(`${HOSTNAME}`) || Host(`www.${HOSTNAME}`)
+      traefik.http.services.frontend.loadbalancer.server.port: "3000"
     networks:
-      - proxy
+      default: null
+      proxy: null
     restart: unless-stopped
 
 networks:
+  default:
   proxy:
     external: true
