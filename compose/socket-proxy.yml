@@ -4,8 +4,8 @@ services:
     env_file: ${ABSOLUTE_PATH}/data/socket-proxy/.env
     hostname: ${SERVICES_SOCKET_PROXY_HOSTNAME:-socket-proxy}
     healthcheck:
-      test: ["CMD-SHELL", "curl -s -o /dev/null -w '%{http_code}' http://localhost:2375 | grep -q '403' || exit 1"]
-      timeout: 1s
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:2375/_ping || exit 1"]
+      timeout: 3s
       interval: 10s
       retries: 3
       start_period: 10s
