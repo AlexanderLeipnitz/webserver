@@ -10,6 +10,7 @@ services:
       - PASSWORD_HASH=${WG_PASSWORD_HASH}
       - WG_DEFAULT_ADDRESS=10.8.0.x
       - WG_DEFAULT_DNS=8.8.8.8
+      - WG_ALLOWED_IPS=0.0.0.0/0, ::/0
     image: ghcr.io/wg-easy/wg-easy
     container_name: wg-easy
     volumes:
