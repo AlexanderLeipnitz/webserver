@@ -7,3 +7,4 @@ include:
   - nextcloud/docker-compose.yml
   - wg-easy/docker-compose.yml
   - nginx/docker-compose.yml
+  - bluesky/docker-compose.yml
