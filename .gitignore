@@ -1,2 +1,8 @@
 .env
-wg-easy/etc_wireguard
+wg-easy/etc_wireguard/
+nextcloud/app/
+data/crowdsec/data/
+minecraft/data/
+data/crowdsec/config/*/
+data/crowdsec/data/
+bluesky/pds/
