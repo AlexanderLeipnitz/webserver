@@ -1,0 +1,28 @@
+services:
+  pds:
+    container_name: pds
+    image: ghcr.io/bluesky-social/pds:0.4
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: ./pds
+        target: /pds
+    env_file:
+      - pds.env
+    labels:
+      traefik.docker.network: proxy
+      traefik.enable: "true"
+      traefik.http.routers.bsky-secure.entrypoints: websecure
+      traefik.http.routers.bsky-secure.middlewares: default@file
+      traefik.http.routers.bsky-secure.rule: Host(`bsky.${HOSTNAME}`)
+      traefik.http.routers.bsky-secure.service: bsky
+      traefik.http.routers.bsky-secure.tls: "true"
+      traefik.http.routers.bsky-secure.tls.certresolver: tls_resolver
+      traefik.http.routers.bsky.entrypoints: web
+      traefik.http.routers.bsky.rule: Host(`bsky.{HOSTNAME}`)
+      traefik.http.services.bsky.loadbalancer.server.port: "3000"
+    networks:
+      default: null
+      proxy: null
