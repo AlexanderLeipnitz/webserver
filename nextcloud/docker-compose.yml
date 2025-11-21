@@ -57,6 +57,19 @@ services:
     networks:
       default: null
       proxy: null
+    nextcloud-appapi-dsp:
+      image: ghcr.io/nextcloud/nextcloud-appapi-dsp:release
+      container_name: nextcloud-appapi-dsp
+      hostname: nextcloud-appapi-dsp
+      restart: unless-stopped
+      privileged: true
+      environment:
+        - NC_HAPROXY_PASSWORD=${NEXTCLOUD_HAPROXY_PASSWORD}
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+      networks:
+        - default
+
 networks:
   default:
   proxy:
