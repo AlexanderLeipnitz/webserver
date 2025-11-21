@@ -57,7 +57,7 @@ services:
     networks:
       default: null
       proxy: null
-    nextcloud-appapi-dsp:
+  nextcloud-appapi-dsp:
       image: ghcr.io/nextcloud/nextcloud-appapi-dsp:release
       container_name: nextcloud-appapi-dsp
       hostname: nextcloud-appapi-dsp
@@ -68,9 +68,4 @@ services:
       volumes:
         - /var/run/docker.sock:/var/run/docker.sock
       networks:
-        - default
-
-networks:
-  default:
-  proxy:
-    external: true
+        default: null
