@@ -1,20 +1,17 @@
-volumes:
-  etc_wireguard:
-
-
 services:
   wg-easy:
     environment:
       - LANG=de
-      - WG_HOST=${HOSTNAME}
+      - WG_HOST=wireguard.${HOSTNAME}
       - PASSWORD_HASH=${WG_PASSWORD_HASH}
+      - WG_PORT=51820
       - WG_DEFAULT_ADDRESS=10.8.0.x
       - WG_DEFAULT_DNS=8.8.8.8
       - WG_ALLOWED_IPS=0.0.0.0/0, ::/0
-    image: ghcr.io/wg-easy/wg-easy
+    image: ghcr.io/wg-easy/wg-easy:latest
     container_name: wg-easy
     volumes:
-      - etc_wireguard:/etc/wireguard
+      - ./etc_wireguard:/etc/wireguard
       - /lib/modules:/lib/modules:ro
     ports:
       - "51820:51820/udp"
