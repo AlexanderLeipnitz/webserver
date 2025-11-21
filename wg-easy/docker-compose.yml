@@ -42,7 +42,3 @@ services:
     #  traefik.http.routers.wireguard.rule: Host(`wireguard.${HOSTNAME}`)
     #  traefik.http.services.wireguard.loadbalancer.server.port: "51821"
 
-networks:
-  default:
-  proxy:
-    external: true
