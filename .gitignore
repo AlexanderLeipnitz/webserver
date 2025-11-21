@@ -6,3 +6,5 @@ minecraft/data/
 data/crowdsec/config/*/
 data/crowdsec/data/
 bluesky/pds/
+data/traefik/.htpasswd
+data/traefik/certs/
