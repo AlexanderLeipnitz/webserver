@@ -1,13 +1,14 @@
 services:
   wg-easy:
     environment:
-      - LANG=de
-      - WG_HOST=wireguard.${HOSTNAME}
-      - PASSWORD_HASH=${WG_PASSWORD_HASH}
-      - WG_PORT=51820
-      - WG_DEFAULT_ADDRESS=10.8.0.x
-      - WG_DEFAULT_DNS=8.8.8.8
-      - WG_ALLOWED_IPS=0.0.0.0/0, ::/0
+      LANG: "de"
+      WG_HOST: wireguard.${HOSTNAME}
+      PASSWORD_HASH: ${WG_PASSWORD_HASH}
+      WG_PORT: "51820"
+      WG_PRE_UP: "iptables -t nat -F; iptables -F;"
+      WG_DEFAULT_ADDRESS: "10.8.0.x"
+      WG_DEFAULT_DNS: "1.1.1.1,8.8.8.8"
+      WG_ALLOWED_IPS: "0.0.0.0/0,::/0"
     image: ghcr.io/wg-easy/wg-easy:latest
     container_name: wg-easy
     volumes:
@@ -27,7 +28,7 @@ services:
       - net.ipv6.conf.all.forwarding=1
       - net.ipv6.conf.default.forwarding=1
     networks:
-      default: null
+    #  default: null
       proxy: null
     #labels:
     #  traefik.docker.network: proxy
