@@ -3,8 +3,7 @@ wg-easy/etc_wireguard/
 nextcloud/app/
 data/crowdsec/data/
 minecraft/data/
-data/crowdsec/config/*/
-data/crowdsec/data/
+data/crowdsec/config/
 bluesky/pds/
 data/traefik/.htpasswd
 data/traefik/certs/
