@@ -1,20 +1,23 @@
 api:
   dashboard: false
+
 metrics:
   prometheus:
     addRoutersLabels: true
+
 certificatesResolvers:
   http_resolver:
     acme:
-      email: "${LETSENCRYPT_EMAIL}"
+      email: ${LETSENCRYPT_EMAIL}
       storage: "/etc/traefik/acme_letsencrypt.json"
       httpChallenge:
         entryPoint: web
   tls_resolver:
     acme:
-      email: "${LETSENCRYPT_EMAIL}"
+      email: ${LETSENCRYPT_EMAIL}
       storage: "/etc/traefik/tls_letsencrypt.json"
       tlsChallenge: {}
+
 entryPoints:
   ping:
     address: ':88'
@@ -27,15 +30,19 @@ entryPoints:
           scheme: https
   websecure:
     address: ':443'
+    http3: {}
     http:
       middlewares:
+        - crowdsec@file
         - default@file
-        - traefik-bouncer@file
+
 ping:
   entryPoint: "ping"
+
 global:
   checknewversion: true
   sendanonymoususage: false
+
 providers:
   docker:
     endpoint: "tcp://socket-proxy:2375"
@@ -45,6 +52,7 @@ providers:
     directory: "/etc/traefik/dynamic_conf"
     watch: true
   providersThrottleDuration: 10s
+
 log:
   level: INFO
   filePath: "/var/log/traefik/traefik.log"
@@ -52,9 +60,32 @@ log:
   maxSize: 10
   maxBackups: 10
   maxAge: 14
+
 accessLog:
-  filePath: "/var/log/traefik/access.log"
   format: json
-  bufferingSize: 50
+  filePath: "/var/log/traefik/access.log"
   fields:
     defaultMode: keep
+    names:
+      ClientUsername: drop
+    headers:
+      defaultMode: keep
+      names:
+        # ✅ Security-essentiell:
+        User-Agent: keep
+        X-Forwarded-For: keep
+        X-Real-IP: keep
+        CF-Connecting-IP: keep
+        Referer: keep
+        Content-Type: keep
+        Accept: keep
+        # ✅ KRITISCH: REDACT statt DROP
+        Authorization: redact        # Zeigt "REDACTED" wenn Header vorhanden
+        Cookie: redact               # Zeigt "REDACTED" wenn Cookie vorhanden
+        Set-Cookie: redact
+
+experimental:
+  plugins:
+    bouncer:
+      moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
+      version: v1.5.1

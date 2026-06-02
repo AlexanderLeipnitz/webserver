@@ -1,0 +1,9 @@
+http:
+  routers:
+    traefik-dashboard:
+      entrypoints: websecure
+      middlewares: traefik-dashboard-auth@file
+      rule: {{ env "SERVICES_TRAEFIK_LABELS_TRAEFIK_HOST" }}
+      service: api@internal
+      tls:
+        certresolver: tls_resolver
