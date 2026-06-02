@@ -46,7 +46,6 @@ services:
       traefik.docker.network: proxy
       traefik.enable: "true"
       traefik.http.routers.nextcloud-secure.entrypoints: websecure
-      traefik.http.routers.nextcloud-secure.middlewares: default@file
       traefik.http.routers.nextcloud-secure.rule: Host(`cloud.${HOSTNAME}`)
       traefik.http.routers.nextcloud-secure.service: nextcloud
       traefik.http.routers.nextcloud-secure.tls: "true"
@@ -54,6 +53,8 @@ services:
       traefik.http.routers.nextcloud.entrypoints: web
       traefik.http.routers.nextcloud.rule: Host(`cloud.${HOSTNAME}`)
       traefik.http.services.nextcloud.loadbalancer.server.port: "80"
+      #traefik.http.routers.nextcloud.entrypoints.web.transport.respondingTimeouts.readTimeout: 0s
+      #traefik.http.routers.nextcloud-secure.middlewares: limit@docker,nextcloudHeader
     networks:
       default: null
       proxy: null
@@ -69,3 +70,8 @@ services:
         - /var/run/docker.sock:/var/run/docker.sock
       networks:
         default: null
+
+networks:
+  default:
+  proxy:
+    external: true
